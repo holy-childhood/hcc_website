@@ -27,7 +27,7 @@
 <pdf-viewer [src]="currentPdf" [original-size]="false" [fit-to-page]="true" [autoresize]="true" [zoom]="1.0" style="displaY:block"></pdf-viewer>
 
 <div class="adminPanel" *ngIf="isEditOn()">
-    <button *ngIf="!pageContent.editing" class="btn btn-sm btn-danger adminButton" (click)="deleteContent()">
+    <button class="btn btn-sm btn-danger adminButton" (click)="deleteContent()">
         <i class="fas fa-trash-alt"></i> Delete
     </button>
 </div>

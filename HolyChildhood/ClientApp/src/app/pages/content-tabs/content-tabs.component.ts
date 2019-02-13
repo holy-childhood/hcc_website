@@ -5,6 +5,7 @@ import { PagesService } from '../pages.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationService } from 'primeng/api';
+import { PageComponent } from '../page/page.component';
 
 @Component({
   selector: 'app-content-tabs',
@@ -13,6 +14,7 @@ import { ConfirmationService } from 'primeng/api';
 })
 export class ContentTabsComponent {
 
+    @Input() pageComponent: PageComponent;
     @Input() pageContentId: number;
     @Input() tabContent: TabContent;
 
@@ -34,7 +36,7 @@ export class ContentTabsComponent {
     deleteContent() {
         const id = this.pageContentId;
         this.pagesService.deletePageContent(id).subscribe(() => {
-            this.pagesService.reloadPage();
+            this.pageComponent.loadPage();
         });
     }
 
@@ -56,11 +58,15 @@ export class ContentTabsComponent {
     updateTab() {
         this.displayTabDialog = false;
         if (this.tab.id) {
-            this.pagesService.saveTab(this.tab);
+            this.pagesService.saveTab(this.tab).subscribe(() => {
+                this.pageComponent.loadPage();
+            });
         } else {
             this.tab.tabContentId = this.tabContent.id;
             this.tab.textContent = {} as TextContent;
-            this.pagesService.addTab(this.tab);
+            this.pagesService.addTab(this.tab).subscribe(() => {
+                this.pageComponent.loadPage();
+            });
         }
     }
 
@@ -69,7 +75,9 @@ export class ContentTabsComponent {
            message: `Are you sure you want to delete the ${tab.title} tab`,
            key: 'tabDelete',
            accept: () => {
-               this.pagesService.deleteTab(tab);
+               this.pagesService.deleteTab(tab).subscribe(() => {
+                   this.pageComponent.loadPage();
+               });
            }
         });
     }

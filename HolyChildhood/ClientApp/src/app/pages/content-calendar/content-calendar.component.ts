@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { PageContent } from '../../shared/models/page-content';
+import { CalendarContent } from '../../shared/models/page-content';
 import { PagesService } from '../pages.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { EventService } from '../../shared/services/event.service';
@@ -8,6 +8,7 @@ import { Event } from '../../shared/models/calendar';
 import { NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import 'fullcalendar';
+import { PageComponent } from '../page/page.component';
 
 @Component({
     selector: 'app-content-calendar',
@@ -17,7 +18,9 @@ import 'fullcalendar';
 })
 export class ContentCalendarComponent implements OnInit {
 
-    @Input() pageContent: PageContent;
+    @Input() pageComponent: PageComponent;
+    @Input() pageContentId: number;
+    @Input() calendarContent: CalendarContent;
 
     options: any;
     header: any;
@@ -117,10 +120,9 @@ export class ContentCalendarComponent implements OnInit {
     }
 
     deleteContent() {
-        const id = this.pageContent.id;
-        console.log(`Delete Page Content Id: ${id}`);
+        const id = this.pageContentId;
         this.pagesService.deletePageContent(id).subscribe(() => {
-            this.pagesService.reloadPage();
+            this.pageComponent.loadPage();
         });
     }
 

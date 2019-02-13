@@ -1,5 +1,6 @@
 import {Page} from './page';
 import {Calendar} from './calendar';
+import {File} from './file';
 
 export interface PageContent {
     id: number;
@@ -13,6 +14,7 @@ export interface PageContent {
     textContent: TextContent;
     tabContent: TabContent;
     calendarContent: CalendarContent;
+    fileContent: FileContent;
 }
 
 export interface TextContent {
@@ -37,6 +39,12 @@ export interface CalendarContent {
     id: number;
     calendarId: number;
     calendar: Calendar;
+}
+
+export interface FileContent {
+    id: number;
+    fileType: string;
+    files: File[];
 }
 
 export interface TextContentBackup {

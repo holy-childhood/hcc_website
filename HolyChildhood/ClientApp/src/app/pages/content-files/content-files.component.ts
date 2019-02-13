@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {PageContent} from '../../shared/models/page-content';
-import {AuthService} from '../../shared/services/auth.service';
-import {PagesService} from '../pages.service';
-import {File} from '../../shared/models/file';
+import { FileContent } from '../../shared/models/page-content';
+import { AuthService } from '../../shared/services/auth.service';
+import { PagesService } from '../pages.service';
+import { File } from '../../shared/models/file';
+import { PageComponent } from '../page/page.component';
 
 @Component({
   selector: 'app-content-files',
@@ -12,7 +13,10 @@ import {File} from '../../shared/models/file';
 })
 export class ContentFilesComponent implements OnInit {
 
-    @Input() pageContent: PageContent;
+    @Input() pageComponent: PageComponent;
+    @Input() pageContentId: number;
+    @Input() fileContent: FileContent;
+
     public currentPdf: String;
     bulletins: File[];
     selectedBulletin: File;
@@ -49,9 +53,9 @@ export class ContentFilesComponent implements OnInit {
     }
 
     deleteContent() {
-        const id = this.pageContent.id;
+        const id = this.pageContentId;
         this.pagesService.deletePageContent(id).subscribe(() => {
-            this.pagesService.reloadPage();
+            this.pageComponent.loadPage();
         });
     }
 
