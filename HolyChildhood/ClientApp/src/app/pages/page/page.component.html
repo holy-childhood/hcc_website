@@ -29,6 +29,24 @@
         <button class="btn btn-sm btn-danger adminButton" (click)="deletePage()">
             <i class="fas fa-trash-alt"></i> Delete Page
         </button>
+        <button *ngIf="pagesService.page && !pagesService.page.parent" class="btn btn-sm btn-success adminButton" (click)="showAddSubPageDialog()">
+            <i class="fas fa-plus"></i> Add Sub-Page
+        </button>
+
+        <p-dialog *ngIf="pagesService.page" [modal]="true" [responsive]="true" [width]="450" [(visible)]="displayAddSubPageDialog">
+            <p-header>
+                {{ pagesService.page.title }}: Add Sub-Page
+            </p-header>
+            <span class="ui-float-label" style="margin: 15px">
+                <input id="pageTitle" type="text" size="30" pInputText [(ngModel)]="pageAdd.title">
+                <label for="pageTitle">Page Title</label>
+            </span>
+            <p-footer>
+                <button type="button" pButton icon="pi pi-check" (click)="addSubPage()" label="OK"></button>
+                <button type="button" pButton icon="pi pi-close" (click)="displayAddSubPageDialog=false" label="Cancel" class="ui-button-secondary"></button>
+            </p-footer>
+
+        </p-dialog>
     </div>
 </div>
 
@@ -42,27 +60,33 @@
             <li class="breadcrumb-item active" aria-current="page">{{ pagesService.page.title }}</li>
         </ol>
     </nav>
-    <div [ngClass]="{'row': pagesService.page.children.length > 0}">
+    <div class="row">
         <div class="col-md-3" *ngIf="pagesService.page.children.length > 0">
             <div class="card" style="width: 100% ;margin-right: 10px">
-                <div class="card-header">{{ pagesService.page.title }} Pages</div>
+                <div class="card-header">{{ pagesService.page.title }}</div>
                 <div class="card-body">
-                    <a *ngFor="let child of pagesService.page.children" routerLink="/pages/{{ child.id }}">{{ child.title }}</a>
+                    <ul class="nav flex-column">
+                        <li class="nav-item" *ngFor="let child of pagesService.page.children">
+                            <a class="nav-link" routerLink="/pages/{{ child.id }}">{{ child.title }}</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="content" [ngClass]="{'edit': isEditOn(), 'col-md-9': pagesService.page.children.length > 0}" *ngFor="let pageContent of pagesService.page.pageContents">
-            <div *ngIf="pageContent.contentType === 'Text'">
-                <app-content-text [pageContentId]="pageContent.id" [textContent]="pageContent.textContent"></app-content-text>
-            </div>
-            <div *ngIf="pageContent.contentType === 'Calendar'">
-                <app-content-calendar [pageContent]='pageContent'></app-content-calendar>
-            </div>
-            <div *ngIf="pageContent.contentType === 'Tabs'">
-                <app-content-tabs [pageContent]='pageContent'></app-content-tabs>
-            </div>
-            <div *ngIf="pageContent.contentType === 'Files'">
-                <app-content-files [pageContent]='pageContent'></app-content-files>
+        <div [ngClass]="{'col-md-9': pagesService.page.children.length > 0, 'col-md-12': pagesService.page.children.length == 0}">
+            <div class="content" [ngClass]="{'edit': isEditOn()}" *ngFor="let pageContent of pagesService.page.pageContents">
+                <div *ngIf="pageContent.contentType === 'Text'">
+                    <app-content-text [pageContentId]="pageContent.id" [textContent]="pageContent.textContent"></app-content-text>
+                </div>
+                <div *ngIf="pageContent.contentType === 'Calendar'">
+                    <app-content-calendar [pageContent]='pageContent'></app-content-calendar>
+                </div>
+                <div *ngIf="pageContent.contentType === 'Tabs'">
+                    <app-content-tabs [pageContentId]='pageContent.id' [tabContent]="pageContent.tabContent"></app-content-tabs>
+                </div>
+                <div *ngIf="pageContent.contentType === 'Files'">
+                    <app-content-files [pageContent]='pageContent'></app-content-files>
+                </div>
             </div>
         </div>
     </div>

@@ -29,6 +29,7 @@ export interface Tab {
     id: number;
     title: string;
     index: number;
+    tabContentId: number;
     textContent: TextContent;
 }
 

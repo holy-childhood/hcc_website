@@ -14,8 +14,10 @@ import { Page } from '../../shared/models/page';
 export class PageComponent implements OnInit {
 
     displayEditPageDialog = false;
+    displayAddSubPageDialog = false;
 
-    pageEdit: Page;
+    pageEdit = {} as Page;
+    pageAdd = {} as Page;
 
     constructor(private authService: AuthService,
                 public pagesService: PagesService,
@@ -59,6 +61,18 @@ export class PageComponent implements OnInit {
     updatePage() {
         this.pagesService.updatePage(this.pageEdit);
         this.displayEditPageDialog = false;
+    }
+
+    showAddSubPageDialog() {
+        this.pageAdd = {} as Page;
+        this.pageAdd.parent = this.pagesService.page;
+        this.displayAddSubPageDialog = true;
+    }
+
+    addSubPage() {
+        this.displayAddSubPageDialog = false;
+        console.log(`Page Title: ${this.pageAdd.title}`);
+        this.pagesService.addPage(this.pageAdd);
     }
 
 }

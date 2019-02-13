@@ -27,7 +27,7 @@ namespace HolyChildhood.Controllers
         {
             var pageContent = await dbContext.PageContents
                 .Include(pc => pc.TextContent)
-                .Include(pc => pc.TabContent).ThenInclude(tc => tc.Tabs)//.ThenInclude(t => t.TextContent)
+                .Include(pc => pc.TabContent).ThenInclude(tc => tc.Tabs).ThenInclude(t => t.TextContent)
                 .Include(pc => pc.CalendarContent).ThenInclude(cc => cc.Calendar).ThenInclude(c => c.Events)
                 .FirstOrDefaultAsync(pc => pc.Id == id);
 

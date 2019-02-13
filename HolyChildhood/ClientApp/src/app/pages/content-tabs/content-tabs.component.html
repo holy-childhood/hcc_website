@@ -1,20 +1,49 @@
-<nav>
-    <div class="nav nav-tabs" role="tablist">
-        <a class="nav-item nav-link active" data-toggle="tab" href="#tab1" role="tab">Tab 1</a>
-        <a class="nav-item nav-link" data-toggle="tab" href="#tab2" role="tab">Tab 2</a>
-    </div>
+<span *ngIf="isEditOn()">
+    <p-confirmDialog key="tabDelete" header="Delete Tab?" icon="fa fa-question-circle" width="425"></p-confirmDialog>
 
-    <div class="tab-content">
-        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
-            Tab 1 Content
-        </div>
-        <div class="tab-pane fade" id="tab2" role="tabpanel">
-            Tab 2 Content
-        </div>
-    </div>
-</nav>
+    <p-dialog header="Tab" [modal]="true" [responsive]="true" [width]="450" [(visible)]="displayTabDialog">
+            <span class="ui-float-label" style="margin: 15px">
+                <input id="float-input" type="text" size="30" pInputText [(ngModel)]="tab.title">
+                <label for="float-input">Tab Title</label>
+            </span>
+            <p-footer>
+                <button type="button" pButton icon="pi pi-check" (click)="updateTab()" label="OK"></button>
+                <button type="button" pButton icon="pi pi-times" (click)="displayTabDialog=false" label="Cancel" class="ui-button-secondary"></button>
+            </p-footer>
+        </p-dialog>
+</span>
+
+<ngb-tabset (tabChange)="beforeTabChange($event)">
+    <ngb-tab *ngFor="let tab of tabContent.tabs">
+        <ng-template ngbTabTitle>
+            {{ tab.title }}
+            <span *ngIf="isEditOn()">
+                &nbsp;
+                <a href="#" (click)="showTabDialog(tab)">
+                    <i class="fas fa-edit"></i>
+                </a>
+                &nbsp;
+                <a href="#" (click)="deleteTab(tab)">
+                    <span style="color: red">
+                        <i class="fas fa-close"></i>
+                    </span>
+                </a>
+            </span>
+        </ng-template>
+        <ng-template ngbTabContent>
+            <app-content-text [textContent]="tab.textContent"></app-content-text>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab *ngIf="isEditOn() && tabContent.tabs.length == 0">
+    </ngb-tab>
+    <ngb-tab *ngIf="isEditOn()" id="addTab">
+        <ng-template ngbTabTitle>
+            <i class="fas fa-plus"></i> Add Tab...
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>
 <div class="adminPanel" *ngIf="isEditOn()">
-    <button *ngIf="!pageContent.editing" class="btn btn-sm btn-danger adminButton" (click)="deleteContent()">
+    <button class="btn btn-sm btn-danger adminButton" (click)="deleteContent()">
         <i class="fas fa-trash-alt"></i> Delete
     </button>
 </div>

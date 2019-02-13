@@ -41,7 +41,8 @@ namespace HolyChildhood.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public int Index { get; set; }
-        //public TextContent TextContent { get; set; }
+        public int TabContentId { get; set; }
+        public TextContent TextContent { get; set; }
     }
 
     public class TextContentBackup

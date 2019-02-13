@@ -30,6 +30,14 @@ export class PagesService {
         this.loadPage(this.page.id);
     }
 
+    public addPage(page: Page) {
+        const url = '/api/page';
+        this.http.post<Page>(url, page, http_options).subscribe(res => {
+            this.nav.loadMenu();
+            this.router.navigate([`/pages/${res.id}`]).then();
+        });
+    }
+
     public getPage(id: number | string): Observable<Page> {
         const url = `/api/page/${id}`;
         return this.http.get<Page>(url);
@@ -47,7 +55,11 @@ export class PagesService {
         const url = `/api/page/${this.page.id}`;
         this.http.delete<Page>(url).subscribe(() => {
             this.nav.loadMenu();
-            this.router.navigate(['/home']).then();
+            if (this.page.parent) {
+                this.router.navigate([`/pages/${this.page.parent.id}`]).then();
+            } else {
+                this.router.navigate(['/home']).then();
+            }
         });
     }
 
@@ -88,4 +100,26 @@ export class PagesService {
         const url = `/api/textcontentbackup/${id}`;
         return this.http.post<TextContent>(url, null, http_options);
     }
+
+    public addTab(tab) {
+        const url = '/api/tab';
+        this.http.post(url, tab, http_options).subscribe(() => {
+            this.reloadPage();
+        });
+    }
+
+    public saveTab(tab) {
+        const url = `/api/tab/${tab.id}`;
+        this.http.put(url, tab, http_options).subscribe(() => {
+            this.reloadPage();
+        });
+    }
+
+    public deleteTab(tab) {
+        const url = `/api/tab/${tab.id}`;
+        this.http.delete(url, http_options).subscribe(() => {
+            this.reloadPage();
+        });
+    }
+
 }

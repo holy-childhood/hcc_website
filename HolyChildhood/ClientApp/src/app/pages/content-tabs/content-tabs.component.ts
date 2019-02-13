@@ -1,8 +1,10 @@
 import { Component, Input } from '@angular/core';
 
-import { PageContent } from '../../shared/models/page-content';
+import {Tab, TabContent, TextContent} from '../../shared/models/page-content';
 import { PagesService } from '../pages.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-content-tabs',
@@ -11,9 +13,15 @@ import { AuthService } from '../../shared/services/auth.service';
 })
 export class ContentTabsComponent {
 
-    @Input() pageContent: PageContent;
+    @Input() pageContentId: number;
+    @Input() tabContent: TabContent;
 
-    constructor(private authService: AuthService, private pagesService: PagesService) { }
+    displayTabDialog: boolean;
+    tab = {} as Tab;
+
+    constructor(private authService: AuthService,
+                private pagesService: PagesService,
+                private confirmService: ConfirmationService) { }
 
     isAuthenticated(): boolean {
         return this.authService.isLoggedIn();
@@ -24,9 +32,45 @@ export class ContentTabsComponent {
     }
 
     deleteContent() {
-        const id = this.pageContent.id;
+        const id = this.pageContentId;
         this.pagesService.deletePageContent(id).subscribe(() => {
             this.pagesService.reloadPage();
+        });
+    }
+
+    beforeTabChange($event: NgbTabChangeEvent) {
+        if ($event.nextId === 'addTab') {
+            this.showTabDialog(null);
+            $event.preventDefault();
+        }
+    }
+
+    showTabDialog(tab) {
+        this.tab = {} as Tab;
+        if (tab) {
+            this.tab = Object.assign({}, tab);
+        }
+        this.displayTabDialog = true;
+    }
+
+    updateTab() {
+        this.displayTabDialog = false;
+        if (this.tab.id) {
+            this.pagesService.saveTab(this.tab);
+        } else {
+            this.tab.tabContentId = this.tabContent.id;
+            this.tab.textContent = {} as TextContent;
+            this.pagesService.addTab(this.tab);
+        }
+    }
+
+    deleteTab(tab) {
+        this.confirmService.confirm({
+           message: `Are you sure you want to delete the ${tab.title} tab`,
+           key: 'tabDelete',
+           accept: () => {
+               this.pagesService.deleteTab(tab);
+           }
         });
     }
 
