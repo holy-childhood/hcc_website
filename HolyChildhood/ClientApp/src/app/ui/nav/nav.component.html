@@ -22,13 +22,13 @@
                     <a *ngFor="let page of menuItem.pages" class="dropdown-item" routerLink="/pages/{{ page.id }}">{{ page.title }}</a>
 
                     <div *ngIf="isEdit()" class="dropdown-divider"></div>
-                    <a *ngIf="isEdit()" class="dropdown-item" (click)="showPageDialog(menuItem)">
+                    <a *ngIf="isEdit()" class="dropdown-item" (click)="showPageDialog(menuItem)" style="cursor: pointer;">
                         <i class="fas fa-plus"></i><i> Add Page...</i>
                     </a>
-                    <a *ngIf="isEdit()" class="dropdown-item" (click)="showMenuDialog(menuItem)">
+                    <a *ngIf="isEdit()" class="dropdown-item" (click)="showMenuDialog(menuItem)" style="cursor: pointer;">
                         <i class="fas fa-pencil-alt"></i><i> Edit Menu...</i>
                     </a>
-                    <a *ngIf="isEdit() && menuItem.pages.length == 0" class="dropdown-item" (click)="deleteMenu(menuItem)">
+                    <a *ngIf="isEdit() && menuItem.pages.length == 0" class="dropdown-item" (click)="deleteMenu(menuItem)" style="cursor: pointer;">
                         <i class="fas fa-trash"></i><i> Delete Menu</i>
                     </a>
                 </div>
