@@ -1,5 +1,31 @@
+<!-- Dialogs -->
+<span *ngIf="isEditOn()">
+    <ng-template #uploadDialog>
+        <div class="modal-header">
+            <h4 class="modal-title">Upload</h4>
+            <button type="button" class="close pull-right" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-5">
+                    <p-calendar placeholder="Select Bulletin Date" dateFormat="MM d, yy" [(ngModel)]="uploadFileName"></p-calendar>
+                </div>
+                <div class="col-7">
+                    <input type="file" (change)="fileSelectionChanged($event.target.files)">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="modalRef.hide(); uploadFile()"><i class="fas fa-check"></i> Ok</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="modalRef.hide()"><i class="fas fa-ban"></i> Cancel</button>
+        </div>
+    </ng-template>
+</span>
+
 <div *ngIf="isAuthenticated()">
-    <button class="btn btn-sm btn-primary">
+    <button class="btn btn-sm btn-primary" (click)="showUploadFileDialog()">
         <i class="fas fa-file-upload"></i> Upload Bulletin
     </button>
     <br/>

@@ -62,12 +62,14 @@ namespace HolyChildhood.Controllers
 
             var extension = file.FileName.Substring(file.FileName.LastIndexOf('.') + 1);
             var title = request.Form["name"].ToString();
+            var fileContentIdStr = request.Form["fileContentId"];
 
             var dbFile = new Models.File
             {
                 Title = title,
                 Type = extension,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                FileContentId = int.Parse(fileContentIdStr)
             };
             await dbContext.Files.AddAsync(dbFile);
             await dbContext.SaveChangesAsync();

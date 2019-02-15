@@ -1,27 +1,27 @@
-<p-dialog *ngIf="selectedEvent" [(visible)]="showEventDialog" [width]="400">
-    <p-header>
-        {{ selectedEvent.title }}
-    </p-header>
-    <div class="row">
-        <div class="col-3">
-            Description
-        </div>
-        <div class="col-9">
-            {{ selectedEvent.description }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-3">
-            Date/Time
-        </div>
-        <div class="col-9">
-            {{ selectedEvent.start.format('MM/DD/YYYY hh:mm A') }}
-        </div>
-    </div>
-    <p-footer>
-        <button type="button" pButton icon="pi pi-times" (click)="showEventDialog=false" label="Close"></button>
-    </p-footer>
-</p-dialog>
+<!--<p-dialog *ngIf="selectedEvent" [(visible)]="showEventDialog" [width]="400">-->
+    <!--<p-header>-->
+        <!--{{ selectedEvent.title }}-->
+    <!--</p-header>-->
+    <!--<div class="row">-->
+        <!--<div class="col-3">-->
+            <!--Description-->
+        <!--</div>-->
+        <!--<div class="col-9">-->
+            <!--{{ selectedEvent.description }}-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="row">-->
+        <!--<div class="col-3">-->
+            <!--Date/Time-->
+        <!--</div>-->
+        <!--<div class="col-9">-->
+            <!--{{ selectedEvent.start.format('MM/DD/YYYY hh:mm A') }}-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<p-footer>-->
+        <!--<button type="button" pButton icon="pi pi-times" (click)="showEventDialog=false" label="Close"></button>-->
+    <!--</p-footer>-->
+<!--</p-dialog>-->
 
 <div *ngIf="showAddEvent">
     <div class="form-group">

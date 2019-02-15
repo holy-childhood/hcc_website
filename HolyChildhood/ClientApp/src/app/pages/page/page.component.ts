@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
+import { SelectItem } from 'primeng/api';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+
+import { Page } from '../../shared/models/page';
+import { Confirm } from '../../shared/models/confirm';
+import { CalendarContent, FileContent, PageContent, TabContent, TextContent } from '../../shared/models/page-content';
 import { PagesService } from '../pages.service';
 import { AuthService } from '../../shared/services/auth.service';
-import { ConfirmationService } from 'primeng/api';
-import { Page } from '../../shared/models/page';
-import {CalendarContent, FileContent, PageContent, TabContent, TextContent} from '../../shared/models/page-content';
-import {NavService} from '../../shared/services/nav.service';
+import { NavService } from '../../shared/services/nav.service';
 
 @Component({
   selector: 'app-page',
@@ -15,21 +18,33 @@ import {NavService} from '../../shared/services/nav.service';
 })
 export class PageComponent implements OnInit {
 
-    displayEditPageDialog = false;
-    displayAddSubPageDialog = false;
+    @ViewChild('confirmationDialog') confirmDialog: ElementRef;
+    @ViewChild('editPageDialog') editPageDialog: ElementRef;
+    @ViewChild('pdfTypeDialog') pdfTypeDialog: ElementRef;
+    @ViewChild('addSubPageDialog') addSubPageDialog: ElementRef;
+    modalRef: BsModalRef;
+    confirmModel: Confirm;
 
     pageId: string | number;
     page: Page;
+    content: PageContent;
 
     pageEdit = {} as Page;
     pageAdd = {} as Page;
 
+    pdfTypes: SelectItem[] = [
+        {label: 'Select PDF Type', value: null},
+        {label: 'Bulletin', value: 'bulletin'},
+        {label: 'Schedule', value: 'schedule'},
+        {label: 'Other', value: 'other'}
+    ];
+
     constructor(private authService: AuthService,
                 public pagesService: PagesService,
-                private confirmService: ConfirmationService,
                 private route: ActivatedRoute,
                 private router: Router,
-                private nav: NavService) {}
+                private nav: NavService,
+                private modalService: BsModalService) {}
 
     ngOnInit() {
         this.route.paramMap.subscribe(params => {
@@ -50,11 +65,15 @@ export class PageComponent implements OnInit {
         return this.isAuthenticated() && this.authService.isEdit();
     }
 
+    showDialog(dialog) {
+        this.modalRef = this.modalService.show(dialog);
+    }
+
     deletePage() {
-        this.confirmService.confirm({
+        this.confirmModel = {
+            title: 'Delete Page?',
             message: 'Are you sure you want to delete this page?',
-            key: 'pageDelete',
-            accept: () => {
+            onOk: () => {
                 this.pagesService.deletePage(this.pageId).subscribe(() => {
                     this.nav.loadMenu();
                     if (this.page.parent) {
@@ -64,31 +83,39 @@ export class PageComponent implements OnInit {
                     }
                 });
             }
-        });
+        } as Confirm;
+        this.showDialog(this.confirmDialog);
     }
 
-    addContent(contentType) {
-        const content = {} as PageContent;
-        content.contentType = contentType;
-        content.page = this.page;
+    createContent(contentType) {
+        this.content = {} as PageContent;
+        this.content.contentType = contentType;
+        this.content.page = this.page;
         if (contentType === 'Text') {
-            content.textContent = {} as TextContent;
+            this.content.textContent = {} as TextContent;
+            this.addContent();
         } else if (contentType === 'Tabs') {
-            content.tabContent = {} as TabContent;
+            this.content.tabContent = {} as TabContent;
+            this.addContent();
         } else if (contentType === 'Files') {
-            content.fileContent = {} as FileContent;
+            this.content.fileContent = {} as FileContent;
+            this.showDialog(this.pdfTypeDialog);
         } else if (contentType === 'Calendar') {
             // @TODO Replace calendarId with specified id
-            content.calendarContent = { calendarId: 1 } as CalendarContent;
+            this.content.calendarContent = { calendarId: 1 } as CalendarContent;
+            this.addContent();
         }
-        this.pagesService.addPageContent(content).subscribe(() => {
+    }
+
+    addContent() {
+        this.pagesService.addPageContent(this.content).subscribe(() => {
             this.loadPage();
         });
     }
 
     editPage() {
         this.pageEdit = Object.assign({}, this.page);
-        this.displayEditPageDialog = true;
+        this.showDialog(this.editPageDialog);
     }
 
     updatePage() {
@@ -96,17 +123,15 @@ export class PageComponent implements OnInit {
             this.nav.loadMenu();
             this.loadPage();
         });
-        this.displayEditPageDialog = false;
     }
 
     showAddSubPageDialog() {
         this.pageAdd = {} as Page;
         this.pageAdd.parent = this.page;
-        this.displayAddSubPageDialog = true;
+        this.showDialog(this.addSubPageDialog);
     }
 
     addSubPage() {
-        this.displayAddSubPageDialog = false;
         this.pagesService.addPage(this.pageAdd).subscribe(res => {
             this.nav.loadMenu();
             this.router.navigate([`/pages/${res.id}`]).then();

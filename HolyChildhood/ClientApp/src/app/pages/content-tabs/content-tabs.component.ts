@@ -1,10 +1,12 @@
-import { Component, Input } from '@angular/core';
+import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 
-import {Tab, TabContent, TextContent} from '../../shared/models/page-content';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap';
+import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+
+import { Confirm } from '../../shared/models/confirm';
+import { Tab, TabContent, TextContent } from '../../shared/models/page-content';
 import { PagesService } from '../pages.service';
 import { AuthService } from '../../shared/services/auth.service';
-import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { ConfirmationService } from 'primeng/api';
 import { PageComponent } from '../page/page.component';
 
 @Component({
@@ -18,12 +20,20 @@ export class ContentTabsComponent {
     @Input() pageContentId: number;
     @Input() tabContent: TabContent;
 
-    displayTabDialog: boolean;
+    @ViewChild('confirmationDialog') confirmDialog: ElementRef;
+    @ViewChild('tabDialog') tabDialog: ElementRef;
+    modalRef: BsModalRef;
+    confirmModel: Confirm;
+
     tab = {} as Tab;
 
     constructor(private authService: AuthService,
                 private pagesService: PagesService,
-                private confirmService: ConfirmationService) { }
+                private modalService: BsModalService) { }
+
+    showDialog(dialog) {
+        this.modalRef = this.modalService.show(dialog);
+    }
 
     isAuthenticated(): boolean {
         return this.authService.isLoggedIn();
@@ -52,11 +62,10 @@ export class ContentTabsComponent {
         if (tab) {
             this.tab = Object.assign({}, tab);
         }
-        this.displayTabDialog = true;
+        this.showDialog(this.tabDialog);
     }
 
     updateTab() {
-        this.displayTabDialog = false;
         if (this.tab.id) {
             this.pagesService.saveTab(this.tab).subscribe(() => {
                 this.pageComponent.loadPage();
@@ -71,15 +80,16 @@ export class ContentTabsComponent {
     }
 
     deleteTab(tab) {
-        this.confirmService.confirm({
-           message: `Are you sure you want to delete the ${tab.title} tab`,
-           key: 'tabDelete',
-           accept: () => {
-               this.pagesService.deleteTab(tab).subscribe(() => {
-                   this.pageComponent.loadPage();
-               });
-           }
-        });
+        this.confirmModel = {
+            title: 'Delete Tab?',
+            message: `Are you sure you want to delete the ${tab.title} tab`,
+            onOk: () => {
+                this.pagesService.deleteTab(tab).subscribe(() => {
+                    this.pageComponent.loadPage();
+                });
+            }
+        } as Confirm;
+        this.showDialog(this.confirmDialog);
     }
 
 }

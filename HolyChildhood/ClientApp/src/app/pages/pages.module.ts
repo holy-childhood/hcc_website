@@ -6,17 +6,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { DialogModule } from 'primeng/dialog';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService, MessageService} from 'primeng/api';
+import { ModalModule } from 'ngx-bootstrap';
+import { BsDatepickerModule } from 'ngx-bootstrap';
+
+import { MessageService} from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { FileUploadModule } from 'primeng/fileupload';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from 'primeng/primeng';
 
 import { MatSelectModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material';
-import { MatDialogModule } from '@angular/material';
 
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
@@ -47,8 +48,6 @@ import 'jquery';
         ReactiveFormsModule,
         FroalaEditorModule,
         FroalaViewModule,
-        DialogModule,
-        ConfirmDialogModule,
         InputTextModule,
         FileUploadModule,
         DropdownModule,
@@ -58,12 +57,13 @@ import 'jquery';
         PdfViewerModule,
         MatSelectModule,
         MatButtonModule,
-        MatDialogModule
+        ModalModule.forRoot(),
+        BsDatepickerModule.forRoot(),
+        CalendarModule
     ],
     providers: [
         PagesService,
         EventService,
-        ConfirmationService,
         MessageService
     ],
     exports: [

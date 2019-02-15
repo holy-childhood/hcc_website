@@ -1,16 +1,39 @@
+<!-- Dialogs -->
 <span *ngIf="isEditOn()">
-    <p-confirmDialog key="tabDelete" header="Delete Tab?" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+    <ng-template #confirmationDialog>
+        <div class="modal-header">
+            <h4 class="modal-title">{{ confirmModel.title }}</h4>
+            <button type="button" class="close pull-right" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <i class="fas fa-question"></i> {{ confirmModel.message }}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="modalRef.hide(); confirmModel.onOk()"><i class="fas fa-check"></i> Yes</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="modalRef.hide()"><i class="fas fa-ban"></i> No</button>
+        </div>
+    </ng-template>
 
-    <p-dialog header="Tab" [modal]="true" [responsive]="true" [width]="450" [(visible)]="displayTabDialog">
+    <ng-template #tabDialog>
+        <div class="modal-header">
+            <h4 class="modal-title">Tab</h4>
+            <button type="button" class="close pull-right" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
             <span class="ui-float-label" style="margin: 15px">
                 <input id="float-input" type="text" size="30" pInputText [(ngModel)]="tab.title">
                 <label for="float-input">Tab Title</label>
             </span>
-            <p-footer>
-                <button type="button" pButton icon="pi pi-check" (click)="updateTab()" label="OK"></button>
-                <button type="button" pButton icon="pi pi-times" (click)="displayTabDialog=false" label="Cancel" class="ui-button-secondary"></button>
-            </p-footer>
-        </p-dialog>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="modalRef.hide(); updateTab()"><i class="fas fa-check"></i> Yes</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="modalRef.hide()"><i class="fas fa-ban"></i> No</button>
+        </div>
+    </ng-template>
 </span>
 
 <ngb-tabset (tabChange)="beforeTabChange($event)">
