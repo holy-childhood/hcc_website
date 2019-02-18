@@ -1,6 +1,6 @@
 import {Page} from './page';
 import {Calendar} from './calendar';
-import {File} from './file';
+import {Pdf} from './file';
 
 export interface PageContent {
     id: number;
@@ -44,7 +44,7 @@ export interface CalendarContent {
 export interface FileContent {
     id: number;
     fileType: string;
-    files: File[];
+    files: Pdf[];
 }
 
 export interface TextContentBackup {

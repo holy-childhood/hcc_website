@@ -15,6 +15,10 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { DropdownModule } from 'primeng/dropdown';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/primeng';
+import { ToolbarModule} from 'primeng/toolbar';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { MenubarModule } from 'primeng/menubar';
+import { SliderModule } from 'primeng/slider';
 
 import { MatSelectModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material';
@@ -57,9 +61,13 @@ import 'jquery';
         PdfViewerModule,
         MatSelectModule,
         MatButtonModule,
+        MenubarModule,
         ModalModule.forRoot(),
         BsDatepickerModule.forRoot(),
-        CalendarModule
+        CalendarModule,
+        ToolbarModule,
+        TooltipModule,
+        SliderModule
     ],
     providers: [
         PagesService,
