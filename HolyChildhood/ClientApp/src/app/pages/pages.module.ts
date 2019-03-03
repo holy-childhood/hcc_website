@@ -11,19 +11,16 @@ import { BsDatepickerModule } from 'ngx-bootstrap';
 
 import { MessageService} from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
-import { FileUploadModule } from 'primeng/fileupload';
+import { InputTextareaModule } from 'primeng/primeng';
+import { CheckboxModule } from 'primeng/primeng';
 import { DropdownModule } from 'primeng/dropdown';
+import { SelectButtonModule } from 'primeng/primeng';
 import { ToastModule } from 'primeng/toast';
 import { CalendarModule } from 'primeng/primeng';
-import { ToolbarModule} from 'primeng/toolbar';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { MenubarModule } from 'primeng/menubar';
-import { SliderModule } from 'primeng/slider';
 
 import { MatSelectModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material';
 
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { PagesService } from './pages.service';
@@ -53,21 +50,18 @@ import 'jquery';
         FroalaEditorModule,
         FroalaViewModule,
         InputTextModule,
-        FileUploadModule,
+        InputTextareaModule,
+        CheckboxModule,
         DropdownModule,
+        SelectButtonModule,
         ToastModule,
         NgbModule,
-        NgxExtendedPdfViewerModule,
         PdfViewerModule,
         MatSelectModule,
         MatButtonModule,
-        MenubarModule,
         ModalModule.forRoot(),
         BsDatepickerModule.forRoot(),
-        CalendarModule,
-        ToolbarModule,
-        TooltipModule,
-        SliderModule
+        CalendarModule
     ],
     providers: [
         PagesService,

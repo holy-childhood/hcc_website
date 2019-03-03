@@ -19,6 +19,7 @@ namespace HolyChildhood.Models
 
         public DbSet<Calendar> Calendars { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<EventType> EventTypes { get; set; }
 
         public DbSet<File> Files { get; set; }
 
