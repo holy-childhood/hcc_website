@@ -34,6 +34,7 @@ import { MatInputModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material';
 
 import { ModalModule } from 'ngx-bootstrap';
+import { PopoverModule } from 'ngx-bootstrap';
 
 @NgModule({
     declarations: [
@@ -66,7 +67,8 @@ import { ModalModule } from 'ngx-bootstrap';
         MatTableModule,
         MatButtonModule,
         MatIconModule,
-        ModalModule
+        ModalModule,
+        PopoverModule.forRoot()
     ],
     providers: [
         SettingsService,
