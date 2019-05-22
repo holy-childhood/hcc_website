@@ -1,0 +1,23 @@
+<h1>Form</h1>
+<button class="btn btn-sm btn-success adminButton" (click)="addField('test')">Add Field</button>
+
+<div *ngFor="let field of formFields" class="row">
+    <div class="col-md-12">
+        <span class="ui-float-label">
+            <input id="fileTypeTitle" type="text" size="30" pInputText>
+            <label for="fileTypeTitle">{{field}}</label>
+        </span>
+    </div>
+</div>
+
+<div class="adminPanel" *ngIf="isEditOn()">
+    <button class="btn btn-sm btn-danger adminButton" (click)="pageComponent.deleteContent(pageContent.id)">
+        <i class="fas fa-trash-alt"></i> Delete
+    </button>
+    <button *ngIf="pageContent && pageContent.index !== 0" class="btn btn-sm btn-secondary adminButton" (click)="pageComponent.moveContentUp(pageContent.id)">
+        <i class="fas fa-angle-up"></i> Move Up
+    </button>
+    <button *ngIf="pageContent && pageContent.index < pageComponent.page.pageContents.length - 1" class="btn btn-sm btn-secondary adminButton" (click)="pageComponent.moveContentDown(pageContent.id)">
+        <i class="fas fa-angle-down"></i> Move Down
+    </button>
+</div>

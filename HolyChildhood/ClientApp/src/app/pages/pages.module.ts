@@ -31,6 +31,7 @@ import { ContentCalendarComponent } from './content-calendar/content-calendar.co
 import { ContentFilesComponent } from './content-files/content-files.component';
 import { ContentTabsComponent } from './content-tabs/content-tabs.component';
 import { ContentTextComponent } from './content-text/content-text.component';
+import { ContentFormsComponent } from './content-forms/content-forms.component';
 
 import 'jquery';
 
@@ -40,7 +41,8 @@ import 'jquery';
         ContentCalendarComponent,
         ContentFilesComponent,
         ContentTabsComponent,
-        ContentTextComponent
+        ContentTextComponent,
+        ContentFormsComponent
     ],
     imports: [
         BrowserAnimationsModule,
