@@ -23,10 +23,10 @@ namespace HolyChildhood.Models
 
         public DbSet<File> Files { get; set; }
 
-        public DbSet<Form> Forms { get; set; }
-        public DbSet<FormRow> FormRows { get; set; }
-        public DbSet<FormElement> FormElements { get; set; }
-        public DbSet<FormElementValue> FormElementValues { get; set; }
+        //public DbSet<Form> Forms { get; set; }
+        //public DbSet<FormRow> FormRows { get; set; }
+        //public DbSet<FormElement> FormElements { get; set; }
+        //public DbSet<FormElementValue> FormElementValues { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
